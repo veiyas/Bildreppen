@@ -1,5 +1,5 @@
 %%
-load Ad; load Ad2; load illum; load chips20; load M_XYZ2RGB;
+load Ad; load Ad2; load illum; load chips20; load M_XYZ2RGB; load xyz;
 % Ad: spektrala känslighetsfunktioner
 
 wavelengths = 400:5:700;
@@ -59,14 +59,55 @@ showRGB(RGB_RAW_D65 .* DwhiteA);
 % Normalized DC65 captures a lot of blue and a moderate amount of green
 
 %%
+load Ad; load Ad2; load illum; load chips20; load M_XYZ2RGB; load xyz; load RGB_CAL_D65; load M_XYZ2RGB; load RGB_raw_D65;
 
+% 3.1)
+R = ones(1,61);
 
+XYZ_D65_REF = xyz' * (chips20 .* CIED65)';
 
+xyzWhite = xyz' * (R .* CIED65)';
+xyzNormFactor = 100 / xyzWhite(2);
 
+% 3.2)
+XYZCal = M_XYZ2RGB \ RGB_CAL_D65;
 
+[maxDiff, meanDiff] = labinator(XYZCal, XYZ_D65_REF);
 
+% Considering L is in the range [0, 100], and a,b in [-127, 128] a mean
+% diff of 5.9 and max diff of 35 is good.
 
+% 3.3)
+% wavelengths = 400:5:700;
+% plot(wavelengths, Ad)
+% figure;
+% plot(wavelengths, xyz)
 
+% xyz looks smooth and artificial compared to the camera sensitivity. This
+% is expected considering xyz is a standard observer constructed
+% experimentally.
+
+% 3.4) ASK FOR HELP
+A = pinv(RGB_CAL_D65') * XYZ_D65_REF';
+
+XYZrawEstimate = A*RGB_RAW_D65;
+
+[maxDiffRaw, meanDiffRaw] = labinator(XYZrawEstimate, XYZ_D65_REF);
+
+% Max diff = -0.4360, Mean diff = -19.66
+% The mean color diff is larger (negatively) than the calibrated
+% The max color diff smaller than the calibrated
+
+% 3.5)
+optiA = Optimize_poly(RGB_RAW_D65, XYZ_D65_REF);
+XYZrawOptiEst = Polynomial_regression(RGB_RAW_D65, optiA);
+
+[maxDiffRawOpti, meanDiffRawOpti] = labinator(XYZrawOptiEst, XYZ_D65_REF);
+
+% Max diff = 1.23, Mean diff = 0.011
+% Very good mean diff compared to least-squares, max diff slightly larger
+% This method is biased to work especially well with the given color
+% samples
 
 
 
