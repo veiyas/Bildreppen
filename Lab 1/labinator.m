@@ -2,6 +2,7 @@ function [maxDiff, meanDiff] = labinator(XYZinput, ref)
 loopSize = size(XYZinput, 2);
 refValues = zeros(3, loopSize);
 labValues = zeros(3, loopSize);
+
 for i = 1:loopSize
     [L, a, b] = xyz2lab(XYZinput(1,i), XYZinput(2,i), XYZinput(3,i));
     labValues(1, i) = L;
@@ -16,9 +17,10 @@ for i = 1:loopSize
     refValues(3, i) = b;
 end
 
-colorDiff = refValues - labValues;
+colorDiff = (refValues - labValues).^2;
+cdSum = sqrt(sum(colorDiff));
 
-maxDiff = max(colorDiff(:));
-meanDiff = mean(colorDiff(:));
+maxDiff = max(cdSum(:));
+meanDiff = mean(cdSum(:));
 end
 
