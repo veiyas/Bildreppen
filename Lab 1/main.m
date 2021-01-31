@@ -100,9 +100,9 @@ XYZCal = inv(M_XYZ2RGB) * RGB_CAL;
 % 3.4)
 A = pinv(RGB_CAL') * XYZ_D65_REF';
 
-XYZrawEstimate = RGB_CAL'*A;
+XYZcalEstimate = RGB_CAL'*A;
 
-[maxDiffRaw, meanDiffRaw] = labinator(XYZrawEstimate', XYZ_D65_REF);
+[maxDiffRaw, meanDiffRaw] = labinator(XYZcalEstimate', XYZ_D65_REF);
 
 % Max diff = -0.73, Mean diff = -45.39
 % Overall diff the color difference will always be towards blue, cyan or green

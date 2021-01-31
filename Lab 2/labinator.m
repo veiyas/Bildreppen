@@ -12,13 +12,13 @@ end
 
 for i = 1:loopSize
     [L, a, b] = xyz2lab(ref(1,i), ref(2,i), ref(3,i));
-    labValues(1, i) = L;
-    labValues(2, i) = a;
-    labValues(3, i) = b;
+    refValues(1, i) = L;
+    refValues(2, i) = a;
+    refValues(3, i) = b;
 end
 
 colorDiff = (refValues - labValues).^2;
-cdSum = sqrt(sum(colorDiff(:)));
+cdSum = sqrt(sum(colorDiff));
 
 maxDiff = max(cdSum(:));
 meanDiff = mean(cdSum(:));
