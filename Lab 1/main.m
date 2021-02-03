@@ -1,5 +1,5 @@
 %%
-load Ad; load Ad2; load illum; load chips20; load M_XYZ2RGB; load xyz;
+load Ad; load Ad2; load illum; load chips20; load M_XYZ2RGB; load xyz; load RGB_raw_D65.mat;
 % Ad: spektrala känslighetsfunktioner
 
 % 1.1)
