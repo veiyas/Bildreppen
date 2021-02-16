@@ -7,19 +7,32 @@ plot_chrom(XYZinkjet, 'b')
 % Dell screen is better for red and blue
 % Inkjet is better for green and yellow
 
-%% 2.1)
+%% 2.1.1)
 im = im2double(imread('peppers_gray.tif'));
 
 % Interpolation
-imInterp = imresize(imresize(im,0.25,'nearest'),4,'nearest');
+imInterp = imresize(imresize(im,0.25,'bicubic'),4,'bicubic');
+
+subplot(1,2,1);
+imshow(im);
+subplot(1,2,2);
+imshow(imInterp);
+
 interpSNR = mysnr(im, im - imInterp)
 
 % SNR = 17.10, which seems to be too good considering the image is awful.
 
+%% 2.1.2)
 % Halftoning
-imHT = im2double(dither(im));
+imErrDiffused = im2double(dither(im));
 imThresh = im2double(im >= 0.5);
-HTSNR = mysnr(im, im - imHT)
+
+subplot(1,2,1);
+imshow(imErrDiffused);
+subplot(1,2,2);
+imshow(imThresh);
+
+HTSNR = mysnr(im, im - imErrDiffused)
 threshSNR = mysnr(im, im - imThresh)
 
 % Error diffused image looks the best but has the worst SNR.
@@ -35,9 +48,9 @@ im = im2double(imread('peppers_color.tif'));
 htR = im2double(dither(im(:,:,1)));
 htG = im2double(dither(im(:,:,2)));
 htB = im2double(dither(im(:,:,3)));
-imHT(:,:,1) = htR;
-imHT(:,:,2) = htG;
-imHT(:,:,3) = htB;
+imErrDiffused(:,:,1) = htR;
+imErrDiffused(:,:,2) = htG;
+imErrDiffused(:,:,3) = htB;
 
 threshR = im2double(im(:,:,1) >= 0.5);
 threshG = im2double(im(:,:,2) >= 0.5);
@@ -47,23 +60,17 @@ imThresh(:,:,2) = threshG;
 imThresh(:,:,3) = threshB;
 
 refLAB = rgb2lab(im);
-HTLAB = rgb2lab(imHT);
+errDiffLAB = rgb2lab(imErrDiffused);
 threshLAB = rgb2lab(imThresh);
 
-HTcolorDiff = (refLAB - HTLAB).^2;
-HTcdSum = sqrt(sum(HTcolorDiff));
+errDiffColorDiff = sqrt((refLAB(:,:,1) - errDiffLAB(:,:,1)).^2 + (refLAB(:,:,2) - errDiffLAB(:,:,2)).^2 + (refLAB(:,:,3) - errDiffLAB(:,:,3)).^2);
+errDiffMeanDiff = mean(mean(errDiffColorDiff))
 
-HTmaxDiff = max(HTcdSum(:))
-HTmeanDiff = mean(HTcdSum(:))
+threshcolorDiff = sqrt((refLAB(:,:,1) - threshLAB(:,:,1)).^2 + (refLAB(:,:,2) - threshLAB(:,:,2)).^2 + (refLAB(:,:,3) - threshLAB(:,:,3)).^2);
+threshMeanDiff = mean(mean(threshcolorDiff))
 
-threshcolorDiff = (refLAB - threshLAB).^2;
-threshcdSum = sqrt(sum(threshcolorDiff));
-
-threshmaxDiff = max(threshcdSum(:))
-threshmeanDiff = mean(threshcdSum(:))
-
-% HT: maxDiff = 1370, meanDiff = 1034
-% Thresh: maxDiff = 1014, meanDiff = 675
+% Error diffusion meanDiff = 72.84
+% Threshhold meanDiff = 50.15
 
 % Halftoned image has the largest differences but is still the best looking
 % image. However, the math says the thresholded image should be a better
@@ -72,17 +79,18 @@ threshmeanDiff = mean(threshcdSum(:))
 %% 3.1)
 im = im2double(imread('peppers_gray.tif'));
 
+% Halftoning
+imErrDiffused = im2double(dither(im));
+imThresh = im2double(im >= 0.5);
+
 subplot(1,3,1);
 imshow(im);
 subplot(1,3,2);
-imshow(imHT);
+imshow(imErrDiffused);
 subplot(1,3,3);
 imshow(imThresh);
 
-% Halftoning
-imHT = im2double(dither(im));
-imThresh = im2double(im >= 0.5);
-HTSNR = snr_filter(im, im - imHT)
+HTSNR = snr_filter(im, im - imErrDiffused)
 threshSNR = snr_filter(im, im - imThresh)
 
 % Diffusion now has a better SNR which correlates to the higher percieved
@@ -103,9 +111,9 @@ im = im2double(imread('peppers_color.tif'));
 htR = im2double(conv2(dither(im(:,:,1)), f, 'same')); htR = (htR > 0) .* htR;
 htG = im2double(conv2(dither(im(:,:,2)), f, 'same')); htG = (htG > 0) .* htG;
 htB = im2double(conv2(dither(im(:,:,3)), f, 'same')); htB = (htB > 0) .* htB;
-imHT(:,:,1) = htR;
-imHT(:,:,2) = htG;
-imHT(:,:,3) = htB;
+imErrDiffused(:,:,1) = htR;
+imErrDiffused(:,:,2) = htG;
+imErrDiffused(:,:,3) = htB;
 
 threshR = im2double(conv2(im(:,:,1) >= 0.5, f, 'same')); threshR = (threshR > 0) .* threshR;
 threshG = im2double(conv2(im(:,:,2) >= 0.5, f, 'same')); threshG = (threshG > 0) .* threshG;
@@ -114,48 +122,65 @@ imThresh(:,:,1) = threshR;
 imThresh(:,:,2) = threshG;
 imThresh(:,:,3) = threshB;
 
+subplot(1,3,1);
+imshow(im);
+subplot(1,3,2);
+imshow(imErrDiffused);
+subplot(1,3,3);
+imshow(imThresh);
+
 refLAB = rgb2lab(im);
-HTLAB = rgb2lab(imHT);
+errDiffLAB = rgb2lab(imErrDiffused);
 threshLAB = rgb2lab(imThresh);
 
-HTcolorDiff = (refLAB - HTLAB).^2;
-HTcdSum = sqrt(sum(HTcolorDiff));
+errDiffColorDiff = sqrt((refLAB(:,:,1) - errDiffLAB(:,:,1)).^2 + (refLAB(:,:,2) - errDiffLAB(:,:,2)).^2 + (refLAB(:,:,3) - errDiffLAB(:,:,3)).^2);
+errDiffMeanDiff = mean(mean(errDiffColorDiff))
 
-HTmaxDiff = max(HTcdSum(:))
-HTmeanDiff = mean(HTcdSum(:))
+threshcolorDiff = sqrt((refLAB(:,:,1) - threshLAB(:,:,1)).^2 + (refLAB(:,:,2) - threshLAB(:,:,2)).^2 + (refLAB(:,:,3) - threshLAB(:,:,3)).^2);
+threshMeanDiff = mean(mean(threshcolorDiff))
 
-threshcolorDiff = (refLAB - threshLAB).^2;
-threshcdSum = sqrt(sum(threshcolorDiff));
-
-threshmaxDiff = max(threshcdSum(:))
-threshmeanDiff = mean(threshcdSum(:))
-
-% HT: maxDiff = 463.25, meanDiff = 288.12
-% Thresh: maxDiff = 1002, meanDiff = 645
+% Error diffusion meanDiff = 20.19
+% Threshold meanDiff = 48.03
 
 % The diffused image is a lot better after the eye filtering is applied.
 % This correlates to the percieved image quality as well.
 
-%% 4.1)
+%% 4.1) S-CIELab Full-reference
 im = im2double(imread('peppers_color.tif'));
 whitePoint = [95.05, 100, 108.9];
-imInterp = imresize(imresize(im,0.25,'nearest'),4,'nearest');
+imInterp = imresize(imresize(im,0.25,'bicubic'),4,'bicubic');
 
 XYZim = rgb2xyz(im);
-XYZinterp = rgb2xyz(im);
+XYZinterp = rgb2xyz(imInterp);
 
-PPI = 189.91;
+subplot(1,2,1);
+imshow(im);
+subplot(1,2,2);
+imshow(imInterp);
+
+PPI = 91.79;
 d = 19.685;
 SPD = PPI * d * tan(pi / 180);
 
-res = scielab(SPD, XYZim, XYZim - XYZinterp, whitePoint, 'xyz');
-max(res(:))
+res = scielab(SPD, XYZim, XYZinterp, whitePoint, 'xyz');
+meanDiff = mean(res(:))
+maxDiff = max(res(:))
 
-%% 4.2.1)
+% meanDiff = 0.23, % maxDiff = 5.86
+
+% The distortion doesn't distort the color directly but rather consolidates and moves color
+% values around in a square-like manner. S-CIELab also applies low-pass
+% filtering to mimic the eye which eleminates a lot of the harsh borders
+% which manifests from the distortion. Therefore, it's not a surprise the
+% mean and max differences are small.
+
+% We feel like the values are too small since the image has been so
+% heavily distorted
+%% 4.2.1) S-CIELab No-reference
 load colorhalftones.mat;
 
-PPI = 189.91;
-d = 19.685;
+PPI = 91.79;
+d = 8;
 SPD = PPI * d * tan(pi / 180);
 
 subplot(1,2,1);
@@ -165,11 +190,12 @@ imshow(c2);
 
 c1SCIE = scielab(SPD, rgb2xyz(c1));
 c2SCIE = scielab(SPD, rgb2xyz(c2));
-c1std = std2(c1SCIE)
-c2std = std2(c2SCIE)
+c1std = std2(c1SCIE(:,:,1)) + std2(c1SCIE(:,:,2)) + std2(c1SCIE(:,:,3))
+c2std = std2(c2SCIE(:,:,1)) + std2(c2SCIE(:,:,2)) + std2(c2SCIE(:,:,3))
 
-% C2 looks slightly more grainy however the SCIELAB differences are so
-% small there barely is any differentiation in graininess between them.
+% They both look equally grainy but differently structured. The blue
+% squares in C1 are a bit more noticable. The SCIELAB differences are so
+% small there barely is any differentiation in mathematical graininess between them as well.
 
 %% 4.2.2)
 
@@ -180,14 +206,23 @@ imshow(c4);
 subplot(1,3,3);
 imshow(c5);
 
-c3std = std2(scielab(SPD, rgb2xyz(c3)));
-c4std = std2(scielab(SPD, rgb2xyz(c4)));
-c5std = std2(scielab(SPD, rgb2xyz(c5)));
+c3SCIE = scielab(SPD, rgb2xyz(c3));
+c4SCIE = scielab(SPD, rgb2xyz(c4));
+c5SCIE = scielab(SPD, rgb2xyz(c5));
+
+c3std = std2(c3SCIE(:,:,1)) + std2(c3SCIE(:,:,2)) + std2(c3SCIE(:,:,3))
+c4std = std2(c4SCIE(:,:,1)) + std2(c4SCIE(:,:,2)) + std2(c4SCIE(:,:,3))
+c5std = std2(c5SCIE(:,:,1)) + std2(c5SCIE(:,:,2)) + std2(c5SCIE(:,:,3))
+
+% Display values
 c3std
 c4std
 c5std
 
-% The difference are on thousands and smaller ???
+% The difference are in thousands and smaller which means the images are
+% pretty close in graininess. The images also feel very similar in
+% graininess to our eyes, even if the images have been rasterized
+% differently.
 
 %% 5.1) Distorsion A
 im = im2double(imread('peppers_gray.tif'));
@@ -202,6 +237,13 @@ imDist1(2:2:end,:,:) = evenRows;
 
 imDist2(1:size(im,1)/2,:,:) = imDist2(1:size(im,1)/2,:,:) + 0.1;
 imDist2(size(im,1)/2:end,:,:) = imDist2(size(im,1)/2:end,:,:) - 0.1;
+
+subplot(1,3,1);
+imshow(im);
+subplot(1,3,2);
+imshow(imDist1);
+subplot(1,3,3);
+imshow(imDist2);
 
 [ssimVal_1, ssimMap_1] = ssim(imDist1, im);
 [ssimVal_2, ssimMap_2] = ssim(imDist2, im);
@@ -221,10 +263,17 @@ imDist2(size(im,1)/2:end,:,:) = imDist2(size(im,1)/2:end,:,:) - 0.1;
 imDist1 = im + 0.2*(rand(size(im)) - 0.5);
 imDist2 = conv2(im, fspecial('gauss', 21, 10), 'same');
 
+subplot(1,3,1);
+imshow(im);
+subplot(1,3,2);
+imshow(imDist1);
+subplot(1,3,3);
+imshow(imDist2);
+
 snrDist1 = snr(im, im - imDist1)
 snrDist2 = snr(im, im - imDist2)
 
-% Dist1 > Dist 2 according to SNR
+% Dist1 > Dist 2 according to SNR which is also what we percieve.
 
 [ssimVal_1, ssimMap_1] = ssim(imDist1, im);
 [ssimVal_2, ssimMap_2] = ssim(imDist2, im);
