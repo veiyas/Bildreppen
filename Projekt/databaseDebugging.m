@@ -35,7 +35,7 @@ end
 load flagDatabase.mat;
 
 subplotIterator = 1;
-for i = 1:3:750
+for i = 1:3:size(flagDatabase, 3)
     subplot(16, 16, subplotIterator);
     imshow(flagDatabase(:,:,i:i+2));
     subplotIterator = subplotIterator + 1;
