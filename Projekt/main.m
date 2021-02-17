@@ -1,9 +1,3 @@
-img = imread('CD-128.png');
-
-scaled_img = rescale(img, 0.5);
-
-imshow(scaled_img);
-
 %Anteckningar från möte 16/2 
 
 %Primitiver som flaggor, 3 färger svårt att mappa till en bildpunkt -->
@@ -27,3 +21,40 @@ imshow(scaled_img);
 %Slutresultatet är inte viktigit egentligen,  enbart motivering.
 
 %Vi ska inte vara rädda för att boka tid för mer handledning, de bits inte!
+
+
+%% PHASE ONE
+
+% Skapa databas för mean färg av varje flagga i L a b
+
+% Kolla om bilden är för stor eller för liten, korrigera och skriv varningsmeddelande
+
+% Preliminärt återskapas svartvita bilder med samma metod som för färgbilder
+
+% Loopa igenom bilden i 32x16 block, om det inte går ut => klipp bort på kanter
+
+% Beräkna medelfärg i L a b och ut block med närmsta medelfärgiga flagga i L a b
+
+% Kolla på S-CIELab för att undersöka reproduktionskvalitetén
+
+%% PHASE TWO
+
+% Scatterplotta alla flaggors L a b färg och ta med i diskussion för rapport
+
+% Ta bort väldigt lika färger i databasen
+
+% Ta lite objektiva kvalitetsmått för olika sorters bilder (utöver visuell bedömning)
+
+% Gör optimering (ta bort flaggor som inte komme användas för två bilder)
+
+
+
+
+
+
+
+
+
+
+
+
