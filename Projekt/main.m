@@ -26,9 +26,13 @@
 %% PHASE ONE
 
 % Skapa databas för mean färg av varje flagga i L a b
+    % meanFlagColors.m skapar en vektor 1x654 med mean L,a,b värden
+    % Exempel: colorDiffFlagToImage = (me
 
-% Kolla om bilden är för stor eller för liten, korrigera och skriv varningsmeddelande
-
+% Kolla om in-bilden är för stor eller för liten, korrigera och skriv varningsmeddelande
+    % Adjust input filen, just nu medellar endast ingen korrigering görs
+    % ännu
+    
 % Preliminärt återskapas svartvita bilder med samma metod som för färgbilder
 
 % Loopa igenom bilden i 32x16 block, om det inte går ut => klipp bort på kanter
