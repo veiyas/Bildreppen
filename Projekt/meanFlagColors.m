@@ -6,8 +6,7 @@ n_flagsX3 = size(flagDatabase, 3);
 
 meanDatabase = zeros(1, n_flagsX3); %Vector with mean LAB values for each flag
 
-for i = 1:3:size(flagDatabase, 3)
-    
+for i = 1:3:size(flagDatabase, 3)    
     rgbFlag = (flagDatabase(:,:,i:i+2)); % gets rgb values
     
     labFlag = rgb2lab(rgbFlag); %converts rgb to lab
@@ -17,12 +16,12 @@ for i = 1:3:size(flagDatabase, 3)
     meanDatabase(:,i) = meanColor(:,:,1);
     meanDatabase(:,i+1) = meanColor(:,:,2);
     meanDatabase(:,i+2) = meanColor(:,:,3); %Store them in a 654 long vector
-    %where each 3 pairs are for an individual flag.
-    
-    
+    %where each 3 pairs are for an individual flag.    
 end
 
-disp('Mean calcuations done!');
+disp('Mean calcuations, saving database...!');
+save('meanDatabase.mat', 'meanDatabase');
+disp('All done!');
 
 %Old junk below
 
