@@ -5,6 +5,8 @@ disp('Calculating mean LAB values for each flag...');
 n_flagsX3 = size(flagDatabase, 3);
 
 meanDatabase = zeros(1, n_flagsX3); %Vector with mean LAB values for each flag
+                                    %Scuffed egentligen, borde hitta bättre
+                                    %lösning
 
 for i = 1:3:size(flagDatabase, 3)    
     rgbFlag = (flagDatabase(:,:,i:i+2)); % gets rgb values
