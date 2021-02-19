@@ -30,8 +30,6 @@
     % Exempel: colorDiffFlagToImage = (me
 
 % Kolla om in-bilden är för stor eller för liten, korrigera och skriv varningsmeddelande
-    % Adjust input filen, just nu medellar endast ingen korrigering görs
-    % ännu
     
 % Preliminärt återskapas svartvita bilder med samma metod som för färgbilder
 
