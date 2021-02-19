@@ -22,6 +22,5 @@ if rem(height, flagH) ~= 0
     image(end-cutoffMargin+1:end, :, :) = [];
     disp('Image adjusted vertically.');
 end
-disp('Image size is ok!'); %debug
 adjusted = image;
 end
