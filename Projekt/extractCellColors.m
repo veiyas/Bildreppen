@@ -7,7 +7,7 @@ flagH = 16;
 
 nCells = (imHeight/flagH - 16)*(imWidth/flagW - 32);
 
-meanCellVecList = zeros(nCells, 5);
+meanCellVecList = zeros(round(nCells), 5);
 meanCellVecIndex = 1;
 
 for h = 1:flagH:imHeight-16 %Go through image vertically 
