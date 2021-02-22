@@ -18,14 +18,9 @@ for i = 1:size(meanCellColors, 1)
     end
     
     % Get cell coordinates in image
-    cellRow = 1;
-    cellCol = 1;
-    if currentCellIndices(1) ~= 1        
-        cellRow = (currentCellIndices(1) - 1)*16 + 1;
-    end
-    if currentCellIndices(2) ~= 1
-        cellCol = (currentCellIndices(2) - 1)*32 + 1;
-    end    
+    cellRow = (currentCellIndices(1) - 1)*16 + 1;
+    cellCol = (currentCellIndices(2) - 1)*32 + 1;
+
     repIm(cellRow:cellRow+15, cellCol:cellCol+31, :) = flagDatabase(:,:,lowestDiffIndex:lowestDiffIndex+2);
 end
 end

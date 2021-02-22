@@ -22,6 +22,8 @@ if width > maxWidth || height > maxHeight
    image = imresize(image, [NaN 1920], 'bicubic');
 end
 
+height = size(image, 1);
+width = size(image, 2);
 
 % Adjust image to fit flag proportions
 if rem(width, flagW) ~= 0
