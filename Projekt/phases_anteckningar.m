@@ -22,7 +22,15 @@
 
 %Vi ska inte vara rädda för att boka tid för mer handledning, de bits inte!
 
+%Anteckningar från möte 25/2 
 
+% Kolla in kapitel 3.2 ifrån "Image Reproduction using Buttons" - rapporten
+% (Dominant colors)
+
+% S-CIELAB compare cell for cell to apply eye filtering for better results.
+% This could take some time to process. 
+
+% Error diffusion if we want to cheat 
 %% PHASE ONE
 
 % Skapa databas för mean färg av varje flagga i L a b
