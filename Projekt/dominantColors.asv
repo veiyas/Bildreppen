@@ -18,7 +18,7 @@ pixel_labels = imsegkmeans(ab,nColors,'NumAttempts',10); %This fails often!
 imshow(pixel_labels,[])
 title('Image Labeled by each cluster index');
 
-%Show indivudal cluster channel (Currently not compatible)
+%Show indivudal cluster channel (Currently not working)
 
 mask1 = pixel_labels == 1;
 cluster1 = rgbFlag .* uint8(mask1);
