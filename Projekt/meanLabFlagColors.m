@@ -4,7 +4,7 @@ disp('Calculating mean LAB values for each flag...');
 
 n_flagsX3 = size(flagDatabase, 3);
 
-meanDatabase = zeros(1, n_flagsX3); %Vector with mean LAB values for each flag
+meanLabDatabase = zeros(1, n_flagsX3); %Vector with mean LAB values for each flag
                                     %Scuffed egentligen, borde hitta bättre
                                     %lösning
 
@@ -15,14 +15,14 @@ for i = 1:3:size(flagDatabase, 3)
     
     meanColor = mean(mean(labFlag)); %Gives the mean for L, a and b separate
     
-    meanDatabase(:,i) = meanColor(:,:,1);
-    meanDatabase(:,i+1) = meanColor(:,:,2);
-    meanDatabase(:,i+2) = meanColor(:,:,3); %Store them in a 654 long vector
+    meanLabDatabase(:,i) = meanColor(:,:,1);
+    meanLabDatabase(:,i+1) = meanColor(:,:,2);
+    meanLabDatabase(:,i+2) = meanColor(:,:,3); %Store them in a 654 long vector
     %where each 3 pairs are for an individual flag.    
 end
 
 disp('Mean calcuations, saving database...!');
-save('meanDatabase.mat', 'meanDatabase');
+save('meanLabDatabase.mat', 'meanLabDatabase');
 disp('All done!');
 
 %Old junk below

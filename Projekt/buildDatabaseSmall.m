@@ -12,7 +12,7 @@ nCountries = size(countryIds, 2) / 2;
 flagDatabase = zeros(8,16, nCountries*3);
 databaseIterator = 1;
 for i = 1:2:size(countryIds,2)
-    fullPath = strcat(prefixPath, countryIds(:, i:i+1), postfixPath);    
+    fullPath = strcat(prefixPath, countryIds(:, i:i+1), postfixPath);
     img = imread(fullPath);
 
     % We standardize flags to 32x16 by filling out if necessary

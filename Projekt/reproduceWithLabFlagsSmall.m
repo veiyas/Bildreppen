@@ -1,5 +1,5 @@
-function [repIm] = reproduceWithFlagsSmall(meanCellColors)
-load flagDatabase.mat flagDatabase; load meanDatabase.mat meanDatabase; % This is probably very slow
+function [repIm] = reproduceWithLabFlagsSmall(meanCellColors)
+load flagDatabase.mat flagDatabase; load meanLabDatabase.mat meanLabDatabase;
 
 for i = 1:size(meanCellColors, 1)
     currentCellIndices = meanCellColors(i, 1:2);
@@ -8,11 +8,11 @@ for i = 1:size(meanCellColors, 1)
     % Search for lowest diff
     lowestDiff = 1000000000;
     lowestDiffIndex = -1;
-    for j = 1:3:size(meanDatabase, 2)
-        colorDiff = sqrt(sum((currentCellMean - [meanDatabase(1,j) meanDatabase(1,j+1) meanDatabase(1,j+2)]).^2));
+    for j = 1:3:size(meanLabDatabase, 2)
+        colorDiffLAB = sqrt(sum((currentCellMean - [meanLabDatabase(1,j) meanLabDatabase(1,j+1) meanLabDatabase(1,j+2)]).^2));
         
-        if colorDiff < lowestDiff
-            lowestDiff = colorDiff;
+        if colorDiffLAB < lowestDiff
+            lowestDiff = colorDiffLAB;
             lowestDiffIndex = j;
         end
     end
