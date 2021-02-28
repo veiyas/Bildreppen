@@ -7,7 +7,7 @@ disp('Constructing database...');
 prefixPath = 'flags/originals/PNG-32/';
 postfixPath = '-32.png';
 nCountries = size(countryIds, 2) / 2;
-
+ 
 flagDatabase = zeros(16,32, nCountries*3);
 databaseIterator = 1;
 for i = 1:2:size(countryIds,2)
