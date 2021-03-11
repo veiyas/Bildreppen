@@ -38,12 +38,8 @@ imshow(repIm)
 % Use object quality measures & S-CIELAB to valdiate resemblense to orginal image
 [snrVal, ssimVal, ssimMap, meanSCIELabDiff, maxSCIELabDiff] = qualityMeasures(im, repIm);
 
-%% Optimization
-load meanLabDatabase.mat;
-flagsToRemoveUnfiltered = optimizeColorsScuffed(meanLabDatabase);
-
-flagsToRemove = unique(flagsToRemoveUnfiltered); %should in theory contain all flag
-                                                 %indexes which are
-                                                 %excessive 
-                                            
+%% Colour Optimization
+load meanLabDatabase.mat; load flagDatabase.mat;
+[optiFlagDatabase, OptiMeanLabDatabase] = optimizeColorsScuffed(flagDatabase, meanLabDatabase, 130);
+plot_Lab(4, OptiMeanLabDatabase, 1, 'r', 50, 0)
                                                 
