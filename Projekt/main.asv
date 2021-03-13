@@ -38,54 +38,28 @@ imshow(repIm)
 % Use object quality measures & S-CIELAB to valdiate resemblense to orginal image
 [snrVal, ssimVal, ssimMap, meanSCIELabDiff, maxSCIELabDiff] = qualityMeasures(im, repIm);
 
-%% Optimization
+%% Colour Optimization
 load meanLabDatabase.mat; load flagDatabase.mat;
-[optiFlagDatabase, OptiMeanLabDatabase] = optimizeColorsScuffed(flagDatabase, meanLabDatabase, 450);
+[optiFlagDatabase, OptiMeanLabDatabase] = optimiseColors(flagDatabase, meanLabDatabase, 130);
 plot_Lab(4, OptiMeanLabDatabase, 1, 'r', 50, 0)
+
+%% Reproduction with color optimization
+
+% Load file and adjust if neccessary
+im = im2double(imread('test_images\test5.jpg'));
+im = adjustInputSmall(im);
+
+% Calculate mean L, a, b values for each cell (32x16) in inputImage
+meanLabCellColors = extractLabCellColorsSmall(im);
+
+% Reproduce and show image
+repIm = reproduceWithLabFlagsSmall(meanLabCellColors);
+
+subplot(2,1,1)
+imshow(im);
+subplot(2,1,2);
+imshow(repIm)
+
+% Use object quality measures & S-CIELAB to valdiate resemblense to orginal image
+[snrVal, ssimVal, ssimMap, meanSCIELabDiff, maxSCIELabDiff] = qualityMeasures(im, repIm);
                                                 
-%% Optimise testing
-load meanLabDatabase.mat;
-
-
-optimisedIndices = [];
-optimisedFlagIter = 1;
-
-for i = 1:3:size(meanLabDatabase,2)
-    currentMean = meanLabDatabase(:, i:i+2);
-    
-    for j = i:3:size(meanLabDatabase,2)
-        allOther = meanLabDatabase(:, j:j+2);
-        if(allOther == currentColor)
-            continue;
-        end
-        
-        colorDiffLAB = sqrt(sum((currentMean-allOther).^2));
-        
-        if(colorDiffLAB > 100)
-            optimisedIndices(optimisedFlagIter) = j;
-            optimisedFlagIter = optimisedFlagIter + 1;
-        end
-    end
-end
-
-optimisedIndices = unique(optimisedIndices);
-optimisedDatabase = zeros(8,16,1);
-optimisedMeanColors = zeros(3,1);
-optimisedFlagIter = 1;
-optimisedMeanIter = 1;
-
-for i = 1:size(optimisedIndices,2)
-   optimisedDatabase(:,:,optimisedFlagIter:optimisedFlagIter+2) = flagDatabase(:,:,optimisedIndices(i):optimisedIndices(i)+2);
-   optimisedMeanColors(:, optimisedMeanIter) = meanLabDatabase(:, i:i+2);
-   optimisedFlagIter = optimisedFlagIter + 3;
-   optimisedMeanIter = optimisedMeanIter + 1;
-end
-
-
-%%
-subplotIterator = 1;
-for i = 1:3:size(optimisedDatabase, 3)
-    subplot(16, 16, subplotIterator);
-    imshow(optimisedDatabase(:,:,i:i+2));
-    subplotIterator = subplotIterator + 1;
-end

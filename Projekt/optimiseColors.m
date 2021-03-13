@@ -34,5 +34,10 @@ for i = 1:size(optimisedIndices,2)
    optimisedFlagIter = optimisedFlagIter + 3;
    optimisedMeanIter = optimisedMeanIter + 1;
 end
+
+disp('Saving database...');
+save('flagDatabase.mat', 'flagDatabase');
+
+disp('All done!');
 end
 
