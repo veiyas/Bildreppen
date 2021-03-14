@@ -1,7 +1,7 @@
 %% Main with Lab difference
  
 % Load file and adjust if neccessary
-im = im2double(imread('test_images\test5.jpg'));
+im = im2double(imread('test_images\test1.jpg'));
 im = adjustInputSmall(im);
 
 % Calculate mean L, a, b values for each cell (16x8) in inputImage
