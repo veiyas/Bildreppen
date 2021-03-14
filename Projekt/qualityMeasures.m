@@ -48,17 +48,17 @@ maxDiff_4K_Far = max(res_4K_Far(:));
 fprintf('\nQuality measures for the reproduced image:\n')
 fprintf('     SNR = %4.2f\n', snrVal)
 fprintf('     Structural similarity = %4.2f\n', ssimVal);
-fprintf('     Mean SCIELab difference, 20cm & 91.79 ppi = %4.2f\n', meanDiff_Close);
-fprintf('     Max SCIELab difference, 20cm & 91.79 ppi = %4.2f\n', maxDiff_Close);
-fprintf('     Mean SCIELab difference, 50cm & 91.79 ppi = %4.2f\n', meanDiff_Normal);
-fprintf('     Max SCIELab difference, 50cm & 91.79 ppi = %4.2f\n', maxDiff_Normal);
-fprintf('     Mean SCIELab difference, 100cm & 91.79 ppi = %4.2f\n', meanDiff_Far);
-fprintf('     Max SCIELab difference, 100cm & 91.79 ppi = %4.2f\n', maxDiff_Far);
-fprintf('     Mean SCIELab difference, 20cm & 183 ppi = %4.2f\n', meanDiff_4K_Close);
-fprintf('     Max SCIELab difference, 20cm & 183 ppi = %4.2f\n', maxDiff_4K_Close);
-fprintf('     Mean SCIELab difference, 50cm & 183 ppi = %4.2f\n', meanDiff_4K_Normal);
-fprintf('     Max SCIELab difference, 50cm & 183 ppi = %4.2f\n', maxDiff_4K_Normal);
-fprintf('     Mean SCIELab difference, 100cm & 183 ppi = %4.2f\n', meanDiff_4K_Far);
-fprintf('     Max SCIELab difference, 100cm & 183 ppi = %4.2f\n', maxDiff_4K_Far);
+fprintf('     Mean SCIELab, 20cm & 91.79 ppi = %4.2f\n', meanDiff_Close);
+fprintf('     Max SCIELab, 20cm & 91.79 ppi = %4.2f\n', maxDiff_Close);
+fprintf('     Mean SCIELab, 50cm & 91.79 ppi = %4.2f\n', meanDiff_Normal);
+fprintf('     Max SCIELab, 50cm & 91.79 ppi = %4.2f\n', maxDiff_Normal);
+fprintf('     Mean SCIELab, 100cm & 91.79 ppi = %4.2f\n', meanDiff_Far);
+fprintf('     Max SCIELab, 100cm & 91.79 ppi = %4.2f\n', maxDiff_Far);
+fprintf('     Mean SCIELab, 20cm & 183 ppi = %4.2f\n', meanDiff_4K_Close);
+fprintf('     Max SCIELab, 20cm & 183 ppi = %4.2f\n', maxDiff_4K_Close);
+fprintf('     Mean SCIELab, 50cm & 183 ppi = %4.2f\n', meanDiff_4K_Normal);
+fprintf('     Max SCIELab, 50cm & 183 ppi = %4.2f\n', maxDiff_4K_Normal);
+fprintf('     Mean SCIELab, 100cm & 183 ppi = %4.2f\n', meanDiff_4K_Far);
+fprintf('     Max SCIELab, 100cm & 183 ppi = %4.2f\n', maxDiff_4K_Far);
 end
 
