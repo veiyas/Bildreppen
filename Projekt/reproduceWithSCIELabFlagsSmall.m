@@ -1,5 +1,5 @@
-function [repIm] = reproduceWithSCIELabFlagsSmall(meanCellColors)
-load flagDatabase.mat flagDatabase; load meanXYZDatabase.mat meanXYZDatabase; % This is probably very slow
+function [repIm] = reproduceWithSCIELabFlagsSmall(meanCellColors, flagDatabase, meanXYZDatabase)
+
 whitePoint = [95.05, 100, 108.9];
 PPI = 91.79;
 d = 19.685;

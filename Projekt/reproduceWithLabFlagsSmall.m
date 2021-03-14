@@ -1,5 +1,4 @@
-function [repIm] = reproduceWithLabFlagsSmall(meanCellColors)
-load flagDatabase.mat flagDatabase; load meanLabDatabase.mat meanLabDatabase;
+function [repIm] = reproduceWithLabFlagsSmall(meanCellColors, flagDatabase, meanLabDatabase)
 
 for i = 1:size(meanCellColors, 1)
     currentCellIndices = meanCellColors(i, 1:2);
