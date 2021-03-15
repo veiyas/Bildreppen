@@ -21,27 +21,30 @@ SPD_4K_Far = PPI_4K * d_Far * tan(pi / 180);
 snrVal = snr(im, im - repIm);
 [ssimVal, ssimMap] = ssim(im, repIm);
 
-res_Close = scielab(SPD_Close, im, repIm, whitePoint, 'xyz');
+im_XYZ = rgb2xyz(im);
+imRep_XYZ = rgb2xyz(repIm);
+
+res_Close = scielab(SPD_Close, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_Close = mean(res_Close(:));
 maxDiff_Close = max(res_Close(:));
 
-res_Normal = scielab(SPD_Normal, im, repIm, whitePoint, 'xyz');
+res_Normal = scielab(SPD_Normal, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_Normal = mean(res_Normal(:));
 maxDiff_Normal = max(res_Normal(:));
 
-res_Far = scielab(SPD_Far, im, repIm, whitePoint, 'xyz');
+res_Far = scielab(SPD_Far, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_Far = mean(res_Far(:));
 maxDiff_Far = max(res_Far(:));
 
-res_4K_Close = scielab(SPD_4K_Close, im, repIm, whitePoint, 'xyz');
+res_4K_Close = scielab(SPD_4K_Close, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_4K_Close = mean(res_4K_Close(:));
 maxDiff_4K_Close = max(res_4K_Close(:));
 
-res_4K_Normal = scielab(SPD_4K_Normal, im, repIm, whitePoint, 'xyz');
+res_4K_Normal = scielab(SPD_4K_Normal, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_4K_Normal = mean(res_4K_Normal(:));
 maxDiff_4K_Normal = max(res_4K_Normal(:));
 
-res_4K_Far = scielab(SPD_4K_Far, im, repIm, whitePoint, 'xyz');
+res_4K_Far = scielab(SPD_4K_Far, im_XYZ, imRep_XYZ, whitePoint, 'xyz');
 meanDiff_4K_Far = mean(res_4K_Far(:));
 maxDiff_4K_Far = max(res_4K_Far(:));
 

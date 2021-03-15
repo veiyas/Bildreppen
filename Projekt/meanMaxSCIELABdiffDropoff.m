@@ -10,7 +10,7 @@ maxResults = [];
 
 for i = 1:1:200
     SPD = PPI * centimeters(i)/2.54 * tan(pi / 180);
-    res = scielab(SPD, im, repIm, whitePoint, 'xyz');
+    res = scielab(SPD, rgb2xyz(im), rgb2xyz(repIm), whitePoint, 'xyz');
     meanResults(i) = mean(res(:));
     maxResults(i) = max(res(:));
 end
@@ -18,3 +18,5 @@ end
 plot(centimeters, meanResults)
 hold on;
 plot(centimeters, maxResults)
+legend('Mean S-CIELAB difference', 'Max S-CIELAB difference');
+title('Mean and max S-CIELAB differences plotted against centimers, PPI = 91.79');
